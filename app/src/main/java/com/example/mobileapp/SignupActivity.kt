@@ -39,12 +39,13 @@ class SignupActivity : AppCompatActivity() {
                 }
 
             }
-            binding.loginRedirectText.setOnClickListener {
-                var loginIntent=Intent(
-                    this,LoginActivity::class.java)
-                startActivity(loginIntent)
-            }
 
         }
+        binding.loginRedirectText.setOnClickListener {
+            var loginIntent=Intent(
+                this,LoginActivity::class.java)
+            startActivity(loginIntent)
+        }
+
     }
 }
