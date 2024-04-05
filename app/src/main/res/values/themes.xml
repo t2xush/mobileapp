@@ -4,7 +4,11 @@
         <!-- Customize your light theme here. -->
          <item name="colorPrimary">@color/lavender</item>
         <item name="colorPrimaryVariant">@color/lavender</item>
+        <item name="android:statusBarColor">@color/lavender</item>
     </style>
 
     <style name="Theme.Mobileapp" parent="Base.Theme.Mobileapp" />
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/grey</item>
+    </style>
 </resources>
