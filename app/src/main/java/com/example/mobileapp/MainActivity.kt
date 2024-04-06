@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
                R.id.bottom_home->{
                    replaceFragment(HomeFragment())
                    true
+
                }
                R.id.bottom_profile->{
                    replaceFragment(ProfileFragment())
