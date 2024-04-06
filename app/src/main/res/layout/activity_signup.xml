@@ -65,11 +65,21 @@
             <Button
                 android:layout_width="350dp"
                 android:layout_height="60dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:text="Sign up"
                 android:id="@+id/signup_button"
                 android:textSize="18sp"
                 app:cornerRadius="30dp"/>
+            <Button
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:text="sign in with google"
+                android:id="@+id/btnGoogleSignIn"
+                android:textSize="18sp"
+                app:cornerRadius="30dp"
+                android:background="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
