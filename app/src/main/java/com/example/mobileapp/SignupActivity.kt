@@ -1,9 +1,12 @@
 package com.example.mobileapp
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,12 +22,15 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GithubAuthProvider
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 
 class SignupActivity : AppCompatActivity() {
 
     private  lateinit var binding: ActivitySignupBinding
     private lateinit var firebaseAuth: FirebaseAuth
 private lateinit var googleSignInClient:GoogleSignInClient
+private lateinit var firestore:FirebaseFirestore
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +38,7 @@ private lateinit var googleSignInClient:GoogleSignInClient
         setContentView(binding.root)
 
         firebaseAuth=FirebaseAuth.getInstance()
+        firestore=FirebaseFirestore.getInstance()
 
         val gso=GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -45,22 +52,41 @@ private lateinit var googleSignInClient:GoogleSignInClient
         }
 
         binding.signupButton.setOnClickListener {
+            var username=binding.signupUername.text.toString()
             var email=binding.signupEmail.text.toString()
             var password=binding.signupPassword.text.toString()
             var confirmPassword=binding.signupConfirm.text.toString()
 
-            if (email.isNotEmpty()&&password.isNotEmpty()&&confirmPassword.isNotEmpty()){
+            if (email.isNotEmpty()&&password.isNotEmpty()&&confirmPassword.isNotEmpty()&&username.isNotEmpty()){
                 if (password==confirmPassword){
                     firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
-                        if(it.isSuccessful){
-                            var intent=Intent(this,LoginActivity::class.java)
-                            startActivity(intent)
-                        }else{
+                       if(it.isSuccessful){
+                           val currentUser=firebaseAuth.currentUser
+                           val userId=currentUser?.uid?:""
+                           val user= hashMapOf(
+                               "username" to username,
+                               "email" to email,
+                           )
+
+                           firestore.collection("users").document(userId)
+                               .set(user)
+                               .addOnSuccessListener {
+                                   Toast.makeText(this@SignupActivity,"Sign up successfully",Toast.LENGTH_SHORT).show()
+                           startActivity(Intent(this@SignupActivity,LoginActivity::class.java))
+                              }
+                               .addOnFailureListener{e->
+                                   val errorMessage="Failed to save user data:${e.message}"
+                                   Log.e(TAG,errorMessage)
+                                   Toast.makeText(this@SignupActivity,errorMessage,Toast.LENGTH_SHORT).show()
+
+                               }
+                       }
+                        else{
                             Toast.makeText(this,it.exception.toString(),Toast.LENGTH_SHORT).show()
                         }
                     }
                 }else{
-                    Toast.makeText(this,"Fields cannot be empty",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Passwords do not match",Toast.LENGTH_SHORT).show()
                 }
 
             }
@@ -94,7 +120,6 @@ val account:GoogleSignInAccount?=task.result
             val credential=GoogleAuthProvider.getCredential(account.idToken,null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if(task.isSuccessful){
-
               val intent=Intent(this,MainActivity::class.java)
                 startActivity(intent)
 
