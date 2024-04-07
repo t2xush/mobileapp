@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.mobileapp.databinding.FragmentProfileBinding
@@ -24,6 +25,8 @@ private lateinit var bottomNavigationView: BottomNavigationView
 private lateinit var binding:FragmentProfileBinding
     private lateinit var auth:FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var username:TextView
+    private lateinit var useremail:TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,9 +34,30 @@ private lateinit var binding:FragmentProfileBinding
     ): View? {
         binding=FragmentProfileBinding.inflate(inflater,container,false)
 val view=binding.root
+
+        username=binding.username
+        useremail=binding.useremail
         auth= FirebaseAuth.getInstance()
         firestore=FirebaseFirestore.getInstance()
 
+
+        val userId=FirebaseAuth.getInstance().currentUser!!.uid
+        val ref=firestore.collection("users").document(userId)
+        ref.get().addOnSuccessListener {
+            if (it!=null){
+                val userName=it.data?.get("username")?.toString()
+                val Email=it.data?.get("email")?.toString()
+
+                username.text=userName
+                useremail.text=Email
+
+            }
+        }
+
+
+
+
+        //handle logout button
        binding.btnLogout.setOnClickListener {
             if(auth.currentUser!=null)
             {
@@ -62,8 +86,9 @@ val googleSignInClient=GoogleSignIn.getClient(requireActivity(),gso)
        // Inflate the layout for this fragment return inflater.inflate(R.layout.fragment_profile, container, false)
     }}
 
-        binding.btnDeleteAccount.setOnClickListener {
 
+        //handle delete account button
+        binding.btnDeleteAccount.setOnClickListener {
 
             AlertDialog.Builder(requireContext())
                 .setTitle("Delete account")
@@ -79,6 +104,8 @@ val googleSignInClient=GoogleSignIn.getClient(requireActivity(),gso)
                 .show()
 
         }
+
+
 
 
 
@@ -119,6 +146,7 @@ private fun deleteUserAccount(){
             }
         }
 }
+
 
 }
 
