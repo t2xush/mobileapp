@@ -25,16 +25,7 @@
             android:padding="20dp"
             >
 
-            <Button
-                android:layout_width="350dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="20dp"
-                android:text="Login with Google Account"
-                android:id="@+id/btnSignInWithGoogle"
-                android:textSize="18sp"
-                app:cornerRadius="30dp"
-                android:background="@color/black"/>
+
 
 
             <EditText

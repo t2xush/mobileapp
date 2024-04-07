@@ -94,6 +94,7 @@ val account:GoogleSignInAccount?=task.result
             val credential=GoogleAuthProvider.getCredential(account.idToken,null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if(task.isSuccessful){
+
               val intent=Intent(this,MainActivity::class.java)
                 startActivity(intent)
 
