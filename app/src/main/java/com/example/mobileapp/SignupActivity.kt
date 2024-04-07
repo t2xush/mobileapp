@@ -50,7 +50,7 @@ private lateinit var firestore:FirebaseFirestore
         findViewById<Button>(R.id.btnGoogleSignIn).setOnClickListener {
             googleSignIn()
         }
-
+//save signup user data
         binding.signupButton.setOnClickListener {
             var username=binding.signupUername.text.toString()
             var email=binding.signupEmail.text.toString()
