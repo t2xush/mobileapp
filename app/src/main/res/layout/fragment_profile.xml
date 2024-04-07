@@ -30,6 +30,14 @@
         android:text="Log out"
         android:textSize="18sp"
        />
+        <Button
+            android:id="@+id/btnDeleteAccount"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="30dp"
+            android:text="Delete Account"
+            android:textSize="18sp"
+            />
 
     </LinearLayout>
 
