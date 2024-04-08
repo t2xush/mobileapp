@@ -1,6 +1,7 @@
 package com.example.mobileapp
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -27,6 +30,7 @@ private lateinit var binding:FragmentProfileBinding
     private lateinit var firestore: FirebaseFirestore
     private lateinit var username:TextView
     private lateinit var useremail:TextView
+    private lateinit var btnDone:Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +41,7 @@ val view=binding.root
 
         username=binding.username
         useremail=binding.useremail
+
         auth= FirebaseAuth.getInstance()
         firestore=FirebaseFirestore.getInstance()
 
@@ -54,6 +59,29 @@ val view=binding.root
             }
         }
 
+//handle changeusername button
+        binding.btnChangeUsername.setOnClickListener {
+            val builder=AlertDialog.Builder(requireContext())
+            val view=layoutInflater.inflate(R.layout.dialog_changeusername,null)
+            val userEmail=view.findViewById<EditText>(R.id.editBox)
+
+            builder.setView(view)
+            val dialog=builder.create()
+
+
+            view.findViewById<Button>(R.id.btnDone).setOnClickListener {
+
+                dialog.dismiss()
+            }
+            view.findViewById<Button>(R.id.btnCancel).setOnClickListener {
+                dialog.dismiss()
+            }
+            if (dialog.window!=null){
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+            }
+            dialog.show()
+
+        }
 
 
 
@@ -146,6 +174,8 @@ private fun deleteUserAccount(){
             }
         }
 }
+
+
 
 
 }

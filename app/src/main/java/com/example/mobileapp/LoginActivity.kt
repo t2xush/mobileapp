@@ -66,10 +66,6 @@ class LoginActivity : AppCompatActivity() {
             }
             dialog.show()
 
-
-
-
-
         }
 
         binding.signupRedirectText.setOnClickListener {

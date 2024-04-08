@@ -109,7 +109,12 @@ private lateinit var firestore:FirebaseFirestore
     private val launcher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         result ->
         if(result.resultCode==Activity.RESULT_OK){
+
             val task=GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+
+
+
         manageResults(task)
         }
     }
